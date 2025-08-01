@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { app, screen } from 'electron';
 import serve from 'electron-serve';
 import path from 'path';
-import { connectIpcMain, createTray, createWindow, initApp, log, setupAutoUpdater } from './helpers';
+import { connectIpcMain, createWindow, initApp, log } from './helpers';
 
 const isProd = process.env.NODE_ENV === 'production';
 
@@ -26,24 +26,24 @@ app.setName('Live wallpaper for Windows');
 		});
 	await app.whenReady();
 	const primaryDisplay = screen.getPrimaryDisplay();
-	const { width, height } = primaryDisplay.workAreaSize;
+	// const { width, height } = primaryDisplay.workAreaSize;
 	const mainWindow = createWindow('main', {
-		width,
-		height,
+		width: 1000,
+		height: 500,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
 			nodeIntegration: true,
 			webSecurity: false
-		},
-		maximizable: true,
-		frame: false
+		}
+		// maximizable: true,
+		// frame: false
 	});
 	initApp();
 
 	// (mainWindow as any).setAlwaysOnBottom(true);
 
 	mainWindow.setMenu(null);
-	mainWindow.maximize();
+	// mainWindow.maximize();
 	if (process.platform === 'win32') app.setAppUserModelId(app.name);
 
 	if (isProd) {
@@ -58,19 +58,19 @@ app.setName('Live wallpaper for Windows');
 		mainWindow.webContents.openDevTools();
 	}
 	// Event
-	const handleClose = (event?: Electron.Event) => {
-		event?.preventDefault();
-		mainWindow.hide();
-	};
-	mainWindow.addListener('close', handleClose);
-	mainWindow.setSkipTaskbar(true);
-	mainWindow.blur();
+	// const handleClose = (event?: Electron.Event) => {
+	// 	event?.preventDefault();
+	// 	mainWindow.hide();
+	// };
+	// mainWindow.addListener('close', handleClose);
+	// mainWindow.setSkipTaskbar(true);
+	// mainWindow.blur();
 
 	// Call
-	createTray(mainWindow);
-	setupAutoUpdater(mainWindow, () => {
-		mainWindow.removeListener('close', handleClose);
-	});
+	// createTray(mainWindow);
+	// setupAutoUpdater(mainWindow, () => {
+	// 	mainWindow.removeListener('close', handleClose);
+	// });
 	connectIpcMain(mainWindow);
 })();
 
