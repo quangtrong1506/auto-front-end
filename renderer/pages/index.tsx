@@ -1,18 +1,11 @@
 'use client';
 
-import { sendIPC } from '../hooks';
+import { HomeIndex } from '../components';
 
 export default function ShortcutGrid(): JSX.Element {
 	return (
-		<div className="w-screen h-screen justify-center items-center flex">
-			<div
-				className=""
-				onClick={() => {
-					sendIPC('open', null);
-				}}
-			>
-				Open
-			</div>
+		<div className="w-full">
+			<HomeIndex />
 		</div>
 	);
 }

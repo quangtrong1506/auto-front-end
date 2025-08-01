@@ -3,8 +3,8 @@ import { findElementByCss } from './element-finder';
 
 // Định nghĩa kiểu Result
 type Result = {
-    error: null | string;
-    status: 'success' | 'error';
+	error: null | string;
+	status: 'success' | 'error';
 };
 
 /**
@@ -16,16 +16,16 @@ type Result = {
  * @returns {Promise<Result>} - Kết quả thực thi (thành công hoặc lỗi).
  */
 export const fillInputField = async (driver: WebDriver, selector: string, text: string): Promise<Result> => {
-    try {
-        // Tìm phần tử bằng CSS selector
-        const inputField = await findElementByCss(driver, selector);
+	try {
+		// Tìm phần tử bằng CSS selector
+		const inputField = await findElementByCss(driver, selector);
 
-        // Xóa text cũ và ghi text mới
-        await inputField.clear();
-        await inputField.sendKeys(text);
+		// Xóa text cũ và ghi text mới
+		await inputField?.clear();
+		await inputField?.sendKeys(text);
 
-        return { error: null, status: 'success' }; // Thành công
-    } catch (error) {
-        return { error: `Không tìm thấy input: ${selector}. Chi tiết lỗi: ${error}`, status: 'error' }; // Lỗi
-    }
+		return { error: null, status: 'success' }; // Thành công
+	} catch (error) {
+		return { error: `Không tìm thấy input: ${selector}. Chi tiết lỗi: ${error}`, status: 'error' }; // Lỗi
+	}
 };

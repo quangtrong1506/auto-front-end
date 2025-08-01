@@ -1,5 +1,5 @@
-appId: com.quangtrong.1506.wallpaper
-productName: Live Wallpaper
+appId: com.quangtrong.1506.downloadwibu
+productName: Download Wibu
 copyright: Copyright © 2025 Quangtrong1506
 
 directories:
@@ -20,7 +20,7 @@ win:
       - nsis
    icon: resources/icon.ico
 
-artifactName: 'Live-Wallpaper.${version}.setup.${ext}'
+artifactName: 'Download-Wibu.${version}.setup.${ext}'
 
 nsis:
    createDesktopShortcut: true

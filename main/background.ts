@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { app, screen } from 'electron';
+import { app } from 'electron';
 import serve from 'electron-serve';
 import path from 'path';
 import { connectIpcMain, createWindow, initApp, log } from './helpers';
@@ -15,17 +15,24 @@ if (isProd) {
 
 app.setName('Live wallpaper for Windows');
 (async () => {
-	if (!app.requestSingleInstanceLock()) app.quit();
-	else
+	if (!app.requestSingleInstanceLock()) {
+		if (isProd) app.quit();
+		else {
+			console.log('Dev');
+		}
+	} else
 		app.on('second-instance', () => {
 			if (mainWindow) {
 				if (mainWindow.isMinimized()) mainWindow.restore();
 				mainWindow.show();
 				mainWindow.focus();
 			}
+			if (!isProd) {
+				app.quit();
+			}
 		});
 	await app.whenReady();
-	const primaryDisplay = screen.getPrimaryDisplay();
+	// const primaryDisplay = screen.getPrimaryDisplay();
 	// const { width, height } = primaryDisplay.workAreaSize;
 	const mainWindow = createWindow('main', {
 		width: 1000,

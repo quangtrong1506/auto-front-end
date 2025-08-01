@@ -11,7 +11,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>Live Wallpaper for Windows</title>
 			</Head>
-			<div className="relative h-svh w-svw">
+			<div className="relative h-svh w-full">
 				<Component {...pageProps} />
 			</div>
 		</Fragment>

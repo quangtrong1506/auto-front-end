@@ -8,7 +8,7 @@ import { showNativeNotification } from './notifications';
 autoUpdater.setFeedURL({
 	provider: 'github',
 	owner: 'quangtrong1506',
-	repo: 'custom-screen',
+	repo: 'download-wibu',
 	token: process.env.GH_TOKEN,
 	releaseType: 'release',
 	publishAutoUpdate: true,
