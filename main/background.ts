@@ -41,11 +41,11 @@ app.setName('Live wallpaper for Windows');
 			preload: path.join(__dirname, 'preload.js'),
 			nodeIntegration: true,
 			webSecurity: false
-		}
+		},
 		// maximizable: true,
-		// frame: false
+		frame: false
 	});
-	initApp();
+	initApp(mainWindow);
 
 	// (mainWindow as any).setAlwaysOnBottom(true);
 

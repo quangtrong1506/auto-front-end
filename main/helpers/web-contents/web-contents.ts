@@ -1,7 +1,13 @@
-import { IpcKey } from '../../types';
+import { IpcKeyInterface, IPCResponseInterface } from 'shared';
 
-/** Gửi dữ liệu ra web contents */
-function sendWebContents(mainWindow: Electron.BrowserWindow, key: keyof typeof IpcKey, data: unknown) {
+/**
+ * Gửi dữ liệu từ main process về renderer thông qua webContents
+ */
+function sendWebContents<K extends IpcKeyInterface>(
+	mainWindow: Electron.BrowserWindow,
+	key: K,
+	data: IPCResponseInterface[K]
+) {
 	mainWindow.webContents.send('main', {
 		[key]: data
 	});

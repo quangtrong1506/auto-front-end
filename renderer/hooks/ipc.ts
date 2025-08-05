@@ -1,9 +1,11 @@
-// src/hooks/use-ipc-key.ts
 import { useEffect, useState } from 'react';
-import { IpcBodyInterface, IpcKey, IPCResponseInterface } from '../shared/respon-ipc';
+import { IpcBodyInterface, IpcKeyInterface, IPCResponseInterface } from 'shared';
 
-export function useIPCKey<K>(key: keyof typeof IpcKey): K | null {
-	const [value, setValue] = useState<K | null>(null);
+/**
+ * Hook lắng nghe dữ liệu IPC gửi từ main về renderer
+ */
+export function useIPCKey<K extends IpcKeyInterface>(key: K) {
+	const [value, setValue] = useState<IPCResponseInterface[K]>();
 
 	useEffect(() => {
 		if (!window.ipc?.on) return;
@@ -11,7 +13,8 @@ export function useIPCKey<K>(key: keyof typeof IpcKey): K | null {
 		const unsubscribe = window.ipc.on('main', (data: Record<string, unknown>) => {
 			if (!(key in data)) return;
 
-			setValue(prev => (JSON.stringify(prev) === JSON.stringify(data[key]) ? prev : (data[key] as K)));
+			const newValue = data[key] as IPCResponseInterface[K];
+			setValue(prev => (JSON.stringify(prev) === JSON.stringify(newValue) ? prev : newValue));
 		});
 
 		return () => {
@@ -23,20 +26,20 @@ export function useIPCKey<K>(key: keyof typeof IpcKey): K | null {
 }
 
 /**
- * Gửi IPC từ renderer sang main
+ * Gửi IPC một chiều từ renderer sang main
  */
-export function sendIPC<K extends keyof typeof IpcKey>(key: K, value: IpcBodyInterface[K] | null): void {
+export function sendIPC<K extends IpcKeyInterface>(key: K, value: IpcBodyInterface[K]) {
 	if (!window.ipc?.send) return;
-	window.ipc.send(IpcKey[key], value);
+	window.ipc.send(key, value);
 }
 
 /**
  * Gửi IPC invoke từ renderer sang main và nhận dữ liệu trả về
  */
-export function sendIpcInvike<K extends keyof typeof IpcKey>(
+export function sendIpcInvoke<K extends IpcKeyInterface>(
 	key: K,
 	value: IpcBodyInterface[K]
 ): Promise<IPCResponseInterface[K]> {
 	if (!window.ipc?.invoke) throw new Error('IPC invoke not available');
-	return window.ipc.invoke(IpcKey[key], value);
+	return window.ipc.invoke(key, value);
 }

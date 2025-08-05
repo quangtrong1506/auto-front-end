@@ -3,17 +3,18 @@
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Fragment } from 'react';
+import { RootLayout } from '../components/layouts';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<Fragment>
 			<Head>
-				<title>Live Wallpaper for Windows</title>
+				<title>Auto Remote Front-end</title>
 			</Head>
-			<div className="relative h-svh w-full">
+			<RootLayout>
 				<Component {...pageProps} />
-			</div>
+			</RootLayout>
 		</Fragment>
 	);
 }

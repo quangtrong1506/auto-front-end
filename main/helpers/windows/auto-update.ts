@@ -1,6 +1,5 @@
 import { ipcMain } from 'electron';
 import { autoUpdater } from 'electron-updater';
-import { IpcKey } from '../../types';
 import { log } from '../dev-log';
 import { sendWebContents } from '../web-contents';
 import { showNativeNotification } from './notifications';
@@ -68,7 +67,7 @@ function setupAutoUpdater(mainWindow: Electron.BrowserWindow, callbackDownload?:
 	);
 }
 
-ipcMain.handle(IpcKey.checkForUpdate, async (_e, _data) => {
+ipcMain.handle('dev', async (_e, _data) => {
 	const a = await autoUpdater.checkForUpdates();
 	return a;
 });

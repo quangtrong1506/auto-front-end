@@ -1,4 +1,4 @@
-import { Menu, Tray, BrowserWindow, shell, app, nativeImage } from 'electron';
+import { app, BrowserWindow, Menu, nativeImage, shell, Tray } from 'electron';
 import path from 'path';
 import { log } from '../dev-log';
 

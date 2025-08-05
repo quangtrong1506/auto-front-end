@@ -1,4 +1,4 @@
-appId: com.quangtrong.1506.downloadwibu
+appId: com.quangtrong.1506.autofrontend
 productName: Download Wibu
 copyright: Copyright © 2025 Quangtrong1506
 
@@ -20,7 +20,7 @@ win:
       - nsis
    icon: resources/icon.ico
 
-artifactName: 'Download-Wibu.${version}.setup.${ext}'
+artifactName: 'Auto-Frontend.${version}.setup.${ext}'
 
 nsis:
    createDesktopShortcut: true
@@ -31,4 +31,4 @@ nsis:
 publish:
    provider: github
    owner: quangtrong1506
-   repo: custom-screen
+   repo: auto-frontend
