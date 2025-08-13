@@ -13,7 +13,7 @@ if (isProd) {
 	// app.setPath('userData', `${app.getPath('userData')} (development)`);
 }
 
-app.setName('Live wallpaper for Windows');
+app.setName('Auto test front-end');
 (async () => {
 	if (!app.requestSingleInstanceLock()) {
 		if (isProd) app.quit();

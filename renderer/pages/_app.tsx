@@ -4,6 +4,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import { Fragment } from 'react';
 import { RootLayout } from '../components/layouts';
+import ReduxProvider from '../lib/redux-provider';
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -12,9 +13,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 			<Head>
 				<title>Auto Remote Front-end</title>
 			</Head>
-			<RootLayout>
-				<Component {...pageProps} />
-			</RootLayout>
+			<ReduxProvider>
+				<RootLayout>
+					<Component {...pageProps} />
+				</RootLayout>
+			</ReduxProvider>
 		</Fragment>
 	);
 }

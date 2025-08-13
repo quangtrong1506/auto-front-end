@@ -11,6 +11,7 @@ export const findElementById = async (driver: WebDriver, id: string): Promise<We
 	try {
 		return await driver.findElement(By.id(id));
 	} catch (error) {
+		log.error(error);
 		return null;
 	}
 };

@@ -2,8 +2,6 @@ import { IpcBodyInterface, IPCResponseInterface } from 'shared';
 import { log } from '../../dev-log';
 
 export function closeWindow(mainWindow: Electron.BrowserWindow) {
-	console.log('dev+1');
-
 	return async (
 		_event: Electron.IpcMainInvokeEvent,
 		_data: IpcBodyInterface['Window_Close']

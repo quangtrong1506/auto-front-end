@@ -1,8 +1,12 @@
 // eslint.config.mjs
+import js from '@eslint/js';
 import prettier from 'eslint-plugin-prettier';
 import tailwind from 'eslint-plugin-tailwindcss';
 import tseslint from 'typescript-eslint';
+
 export default [
+	js.configs.recommended,
+	...tseslint.configs.recommended,
 	{
 		ignores: ['node_modules/**', 'renderer/.next/**', 'dist/**', 'app/**']
 	},

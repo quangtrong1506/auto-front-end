@@ -1,5 +1,5 @@
 appId: com.quangtrong.1506.autofrontend
-productName: Download Wibu
+productName: Auto Test Frontend
 copyright: Copyright © 2025 Quangtrong1506
 
 directories:
@@ -11,9 +11,15 @@ files:
      filter:
         - package.json
         - app
+
+asarUnpack:
+   - drivers/**
+
 extraResources:
    - from: resources/icon.ico
      to: icon.ico
+   - from: drivers/
+     to: drivers/
 
 win:
    target:

@@ -144,3 +144,17 @@
 .electron-no-drag {
 	-webkit-app-region: no-drag !important;
 }
+
+/* styles/globals.css hoặc file global khác */
+.scrollbar-hidden {
+	scrollbar-width: none; /* Firefox */
+	-ms-overflow-style: none; /* IE & Edge */
+}
+.scrollbar-hidden::-webkit-scrollbar {
+	display: none; /* Chrome, Safari */
+}
+
+.dev::-webkit-scrollbar-track-piece {
+	position: absolute !important;
+	top: 0;
+}
