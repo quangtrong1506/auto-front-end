@@ -1,5 +1,5 @@
 import { IpcBodyInterface, IPCResponseInterface } from 'shared';
-import { log } from '../../dev-log';
+import { log } from '../helpers/dev-log';
 
 export function closeWindow(mainWindow: Electron.BrowserWindow) {
 	return async (

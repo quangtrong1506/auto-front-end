@@ -1,5 +1,5 @@
 import { By, WebDriver, WebElement } from 'selenium-webdriver';
-import { log } from '../dev-log';
+import { log } from '../helpers';
 
 /**
  * Tìm phần tử bằng ID.

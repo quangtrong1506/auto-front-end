@@ -76,17 +76,24 @@ const filesSlice = createSlice({
 			folder.name = action.payload.name;
 			return state;
 		},
-		deleteFolder: (
-			state: FilesStateInterface,
-			action: PayloadAction<{
-				folderId: string;
-			}>
-		) => {
+		deleteFolder: (state: FilesStateInterface, action: PayloadAction<{ folderId: string }>) => {
 			const { folderId } = action.payload;
+			const cloneFolder = state.folders.find(folder => folder.id === folderId);
+			if (!cloneFolder) return state;
+
+			// Xoá các tab thuộc folder này
+			state.activeTabs = state.activeTabs.filter(tab => !cloneFolder.files.some(file => file.id === tab.file.id));
+
+			// Nếu không còn tab nào active thì set tab đầu tiên active
+			if (!state.activeTabs.some(tab => tab.active) && state.activeTabs.length > 0) {
+				state.activeTabs[0] = { ...state.activeTabs[0], active: true };
+			}
+
+			// Xoá folder
 			state.folders = state.folders.filter(folder => folder.id !== folderId);
+
 			return state;
 		},
-
 		pasteFile: (state: FilesStateInterface, action: PayloadAction<{ toFolderId: string }>) => {
 			console.log(state.cloneFile, action.payload);
 			if (!state.cloneFile) return;
@@ -172,6 +179,10 @@ const filesSlice = createSlice({
 			folder?.files.push(newFile);
 			folder?.files.sort((a, b) => a.name.localeCompare(b.name));
 			state.folders.sort((a, b) => a.name.localeCompare(b.name));
+			state.activeTabs = [
+				...state.activeTabs.map(tab => ({ ...tab, active: false })),
+				{ index: state.activeTabs.length, file: newFile, active: true }
+			];
 		},
 		renameFile: (state: FilesStateInterface, action: PayloadAction<{ id: string; name: string }>) => {
 			const { id, name } = action.payload;

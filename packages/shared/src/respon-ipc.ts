@@ -7,8 +7,10 @@ export enum IpcKey {
 	Window_Minimized = 'Window_Minimized',
 	/** Thu nhỏ hoặc maximize cửa sổ */
 	Window_Maximized = 'Window_Maximized',
-
-	RunFile = 'Run_File'
+	/** Chạy file */
+	RunFile = 'Run_File',
+	/** Tải driver */
+	Download_Driver = 'Download_Driver'
 }
 export type IpcKeyInterface = (typeof IpcKey)[keyof typeof IpcKey];
 
@@ -29,8 +31,30 @@ export type IPCResponseInterface = {
 		message?: string;
 	};
 	[IpcKey.RunFile]: {
-		status: 'success' | 'error';
+		job_id: string;
+		status: 'success' | 'error' | 'running';
 		message?: string;
+		data?: {
+			time: string;
+			desscription?: string;
+			command: string;
+			line: number;
+		};
+		fileName: string;
+		url: string;
+	};
+	[IpcKey.Download_Driver]: {
+		status: 'success' | 'error' | 'downloading';
+		message?: string;
+		data?: {
+			process?: number;
+			total_size?: number;
+			downloaded_size?: number;
+			driver?: {
+				browser: string;
+				version: string;
+			};
+		};
 	};
 };
 
@@ -43,6 +67,9 @@ export interface IpcBodyInterface {
 		maximized: boolean;
 	};
 	[IpcKey.RunFile]: {
+		job_id: string;
 		file: FileInterface;
+		browser: 'chrome' | 'firefox' | 'edge' | 'ie' | 'opera' | 'safari';
 	};
+	[IpcKey.Download_Driver]: null;
 }

@@ -1,6 +1,6 @@
 import { ipcMain } from 'electron';
 import { IpcKey } from 'shared';
-import { log } from '../../dev-log';
+import { log } from '../helpers/dev-log';
 import { ipcHandle } from './handle-ipc';
 
 export function connectIpcMain(mainWindow: Electron.BrowserWindow) {

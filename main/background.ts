@@ -11,6 +11,7 @@ if (isProd) {
 } else {
 	app.setPath('userData', `D:\\Apps\\${app.name}(development)`);
 	// app.setPath('userData', `${app.getPath('userData')} (development)`);
+	// app.getPath('userData');
 }
 
 app.setName('Auto test front-end');
@@ -37,6 +38,8 @@ app.setName('Auto test front-end');
 	const mainWindow = createWindow('main', {
 		width: 1000,
 		height: 500,
+		minWidth: 400,
+		minHeight: 300,
 		webPreferences: {
 			preload: path.join(__dirname, 'preload.js'),
 			nodeIntegration: true,
@@ -55,10 +58,10 @@ app.setName('Auto test front-end');
 
 	if (isProd) {
 		await mainWindow.loadURL('app://./');
-		app.setLoginItemSettings({
-			openAtLogin: true,
-			path: app.getPath('exe')
-		});
+		// app.setLoginItemSettings({
+		// 	openAtLogin: true,
+		// 	path: app.getPath('exe')
+		// });
 	} else {
 		const port = process.argv[2];
 		await mainWindow.loadURL(`http://localhost:${port}/`);

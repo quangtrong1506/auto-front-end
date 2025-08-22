@@ -10,12 +10,14 @@ import { CommandInterface, FileInterface, IpcKey } from 'shared';
 import { randomID } from '../../helpers';
 import { sendIPC } from '../../hooks';
 import { saveCommands } from '../../lib/features';
+import emitter from '../../utils/event-bus';
 import { FileCommands } from './commands';
 
 export const FileDetails = ({ file }: { file?: FileInterface }) => {
 	const dispatch = useDispatch();
 	const [commands, setCommands] = useState<CommandInterface[]>((file?.commands || []).slice(1));
 	const [start, setStart] = useState<CommandInterface>((file?.commands || [])[0]);
+	const [broswer, setBrowser] = useState<'chrome' | 'firefox' | 'edge' | 'ie' | 'opera' | 'safari'>('chrome');
 	const handleDragEnd = (event: DragEndEvent) => {
 		const { active, over } = event;
 		if (!over || active.id === over.id) return;
@@ -37,12 +39,16 @@ export const FileDetails = ({ file }: { file?: FileInterface }) => {
 
 	function handleRunFile() {
 		if (!file) return;
-		sendIPC(IpcKey.RunFile, {
+		const data = {
 			file: {
 				...file,
 				commands: [start, ...commands]
-			}
-		});
+			},
+			browser: broswer,
+			job_id: randomID()
+		};
+		sendIPC(IpcKey.RunFile, data);
+		emitter.emit('sendNewTask', data);
 	}
 
 	return (
@@ -88,6 +94,18 @@ export const FileDetails = ({ file }: { file?: FileInterface }) => {
 						}));
 					}}
 				></input>
+				<select
+					value={broswer}
+					onChange={e => setBrowser(e.target.value as 'chrome' | 'firefox' | 'edge' | 'ie' | 'opera' | 'safari')}
+					className="w-[78px] text-sm focus-within:outline-none"
+				>
+					<option value="chrome">Chrome</option>
+					<option value="firefox">Firefox</option>
+					<option value="edge">Edge</option>
+					<option value="ie">IE</option>
+					<option value="opera">Opera</option>
+					<option value="safari">Safari</option>
+				</select>
 				<div className="px-2">
 					<button className="text-sm text-cyan-600" onClick={handleRunFile}>
 						Chạy
@@ -136,15 +154,15 @@ export const FileDetails = ({ file }: { file?: FileInterface }) => {
 			</DndContext>
 			<div className="mt-3 flex justify-center gap-3">
 				<button
-					className="rounded-xl border border-cyan-600 p-1 text-sm text-cyan-500"
+					className="rounded-xl border border-cyan-600 p-1 px-4 py-2 text-sm text-cyan-500"
 					onClick={() => {
 						setCommands(prev => [
 							...prev,
 							{
-								id: (prev.length + 1).toString(),
+								id: randomID(),
 								type: 'click',
 								data: {
-									selector: ''
+									dbClick: false
 								}
 							}
 						]);
@@ -193,7 +211,7 @@ function SortableCommandItem({
 			{/* <div className="cursor-n-resize p-1" {...listeners}>
 				⠿
 			</div> */}
-			<FileCommands onClose={onClose} onCopy={onCopy} defaultValue={item} onChange={onChange} />
+			<FileCommands onClose={onClose} onCopy={onCopy} value={item} onChange={onChange} />
 		</div>
 	);
 }

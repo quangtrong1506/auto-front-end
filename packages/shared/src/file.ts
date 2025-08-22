@@ -19,6 +19,7 @@ interface BaseCommandInterface {
 	description?: string;
 	delay?: number;
 	retry?: number;
+	selector?: string;
 }
 
 interface CommandMap {
@@ -28,8 +29,10 @@ interface CommandMap {
 	window: {
 		rezize: { width?: number; height?: number; maximun?: boolean };
 	};
-	click: { selector: string };
-	scroll: { selector: string; top?: number; left?: number; bottom?: number; right?: number };
+	click: {
+		dbClick?: boolean;
+	};
+	scroll: { top?: number; left?: number; bottom?: number; right?: number };
 	keyboard: {
 		keys: string[];
 	};

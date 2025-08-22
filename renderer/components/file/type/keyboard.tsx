@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { randomID } from '../../../helpers';
 
 interface KeyboardProps {
 	keys?: string[];
@@ -7,29 +8,28 @@ interface KeyboardProps {
 
 export function Keyboard({ keys = [], onChange }: KeyboardProps) {
 	const [onRecord, setOnRecord] = useState<boolean>(false);
-	const [localKeys, setLocalKeys] = useState<string[]>(keys);
+	const [localKeys, setLocalKeys] = useState<
+		{
+			id: string;
+			key: string;
+		}[]
+	>(keys.map(key => ({ id: randomID(), key })));
 	const pressedKeysRef = useRef<Set<string>>(new Set());
 
 	useEffect(() => {
 		function handleKeyDown(e: KeyboardEvent) {
-			// Chặn hành vi mặc định với tổ hợp hay dùng
-			if ((e.ctrlKey || e.metaKey) && /^[a-zA-Z]$/.test(e.key)) e.preventDefault();
+			e.preventDefault();
 
 			if (!pressedKeysRef.current.has(e.key)) {
-				pressedKeysRef.current.add(e.key);
-
-				// Nếu đang giữ modifier → gộp thành combo
-				const modifiers = [];
-				if (e.ctrlKey) modifiers.push('Ctrl');
-				if (e.shiftKey) modifiers.push('Shift');
-				if (e.altKey) modifiers.push('Alt');
-				if (e.metaKey) modifiers.push('Meta');
-
-				const combo = modifiers.length > 0 && !modifiers.includes(e.key) ? [...modifiers, e.key].join('+') : e.key;
-
 				setLocalKeys(prev => {
-					const updated = [combo, ...prev];
-					onChange?.(updated);
+					const updated = [
+						...prev,
+						{
+							id: randomID(),
+							key: e.key
+						}
+					];
+					onChange?.(updated.map(k => k.key));
 					return updated;
 				});
 			}
@@ -61,9 +61,9 @@ export function Keyboard({ keys = [], onChange }: KeyboardProps) {
 				{!onRecord && localKeys.length === 0 ? 'Bấm bắt đầu để ghi phím' : ''}
 			</div>
 			<div className="flex h-28 flex-1 flex-wrap items-start gap-1 overflow-y-auto p-2">
-				{localKeys.map(k => (
-					<div className="rounded-md border border-gray-200 p-1" key={k}>
-						{k}
+				{localKeys.reverse().map(k => (
+					<div className="rounded-md border border-gray-200 p-1" key={k.id}>
+						{k.key === ' ' ? 'Space' : k.key}
 					</div>
 				))}
 			</div>

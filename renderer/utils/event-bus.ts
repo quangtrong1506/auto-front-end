@@ -1,5 +1,5 @@
 import mitt from 'mitt';
-import { FileInterface, FolderInterface } from 'shared';
+import { FileInterface, FolderInterface, IpcBodyInterface, IpcKey } from 'shared';
 
 /** Danh sách sự kiện và kiểu dữ liệu truyền kèm */
 type Events = {
@@ -18,6 +18,8 @@ type Events = {
 	focusFolder: FolderInterface;
 	newFolder: null;
 	renameFolder: FolderInterface;
+
+	sendNewTask: IpcBodyInterface[IpcKey.RunFile];
 };
 
 const emitter = mitt<Events>();
